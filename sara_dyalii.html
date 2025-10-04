@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>So proud of you, Sara ❤️</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;600;700&family=Poppins:wght@300;400;500;600&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* Reset and base styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(255, 182, 193, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 215, 0, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(255, 192, 203, 0.2) 0%, transparent 50%),
+                linear-gradient(135deg, #FFF8DC 0%, #FFE4E1 25%, #FFB6C1 50%, #F4E4BC 75%, #FFEFD5 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"><text y="16" font-size="16">💖</text></svg>'), auto;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 60 60"><defs><pattern id="hearts" x="0" y="0" width="60" height="60" patternUnits="userSpaceOnUse"><text x="30" y="30" font-size="20" fill="rgba(255,182,193,0.1)" text-anchor="middle" dominant-baseline="middle">💕</text></pattern></defs><rect width="60" height="60" fill="url(%23hearts)"/></svg>') repeat;
+            opacity: 0.3;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Floating hearts container */
+        .floating-hearts-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .floating-heart {
+            position: absolute;
+            font-size: 1.5rem;
+            color: #FFB6C1;
+            animation: floatUp 8s linear infinite;
+            opacity: 0.8;
+        }
+
+        /* Click hearts container */
+        .click-hearts-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        .click-heart {
+            position: absolute;
+            font-size: 1.2rem;
+            color: #FF69B4;
+            animation: heartBurst 1.5s ease-out forwards;
+            pointer-events: none;
+        }
+
+        /* Music button */
+        .music-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(45deg, #FFD700, #F4E4BC);
+            border: none;
+            border-radius: 50px;
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+            transition: all 0.3s ease;
+            z-index: 100;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 500;
+            color: #8B4513;
+        }
+
+        .music-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 215, 0, 0.4);
+        }
+
+        .music-btn.playing {
+            background: linear-gradient(45deg, #FF69B4, #FFB6C1);
+            animation: musicPulse 1.5s ease-in-out infinite;
+            color: #FFFFFF;
+            box-shadow: 0 4px 20px rgba(255, 105, 180, 0.5);
+        }
+
+        .music-icon {
+            font-size: 1.2rem;
+        }
+
+        /* Main container */
+        .main-container {
+            position: relative;
+            z-index: 2;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* Hero section */
+        .hero-section {
+            text-align: center;
+            padding: 60px 0 40px;
+        }
+
+        .main-heading {
+            font-family: 'Dancing Script', cursive;
+            font-size: 3.5rem;
+            font-weight: 700;
+            color: #8B4513;
+            text-shadow: 2px 2px 4px rgba(255, 182, 193, 0.5);
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, #FF69B4, #FFD700);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .heart-decoration {
+            font-size: 2rem;
+            animation: heartbeat 2s ease-in-out infinite;
+        }
+
+        /* Sweet message box - NEW! */
+        .sweet-message {
+            background: rgba(255, 255, 255, 0.95);
+            border: 2px solid rgba(255, 215, 0, 0.4);
+            border-radius: 20px;
+            padding: 25px;
+            margin: 30px auto;
+            max-width: 600px;
+            box-shadow: 0 8px 25px rgba(255, 182, 193, 0.3);
+            animation: fadeInScale 1s ease-out 1s forwards;
+            opacity: 0;
+        }
+
+        .sweet-message p {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.1rem;
+            color: #8B4513;
+            line-height: 1.8;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .sweet-message .highlight {
+            font-weight: 600;
+            color: #FF69B4;
+            font-size: 1.15rem;
+        }
+
+        /* Image section */
+        .image-section {
+            text-align: center;
+            margin: 60px 0;
+        }
+
+        .image-container {
+            margin-bottom: 40px;
+            position: relative;
+            display: inline-block;
+            min-height: 300px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .center-image {
+            max-width: 90%;
+            width: auto;
+            height: auto;
+            max-height: 500px;
+            min-height: 250px;
+            border-radius: 20px;
+            box-shadow: 0 12px 40px rgba(255, 182, 193, 0.4);
+            border: 3px solid rgba(255, 215, 0, 0.3);
+            transition: all 0.3s ease;
+            opacity: 0;
+            object-fit: contain;
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .center-image:hover {
+            transform: scale(1.02);
+            box-shadow: 0 15px 50px rgba(255, 182, 193, 0.5);
+        }
+
+        .image-fallback {
+            text-align: center;
+            padding: 50px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            border: 3px solid rgba(255, 215, 0, 0.3);
+            box-shadow: 0 12px 40px rgba(255, 182, 193, 0.4);
+        }
+
+        .fallback-heart {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            animation: heartbeat 2s ease-in-out infinite;
+        }
+
+        .image-fallback p {
+            font-size: 1.2rem;
+            color: #8B4513;
+            font-weight: 500;
+        }
+
+        /* Arabic text container */
+        .arabic-text-container {
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        .arabic-text-1 {
+            font-family: 'Amiri', serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #8B4513;
+            text-shadow: 2px 2px 4px rgba(255, 182, 193, 0.6);
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, #FF69B4, #FFD700, #FF1493);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            background-size: 200% 200%;
+            animation: gradientShift 3s ease-in-out infinite;
+            line-height: 1.2;
+            position: relative;
+        }
+
+        .arabic-text-2 {
+            font-family: 'Amiri', serif;
+            font-size: 2rem;
+            font-weight: 600;
+            color: #B8860B;
+            text-shadow: 1px 1px 3px rgba(255, 215, 0, 0.7);
+            background: rgba(255, 255, 255, 0.9);
+            padding: 15px 25px;
+            border-radius: 15px;
+            display: inline-block;
+            border: 2px solid rgba(255, 215, 0, 0.4);
+            box-shadow: 0 6px 20px rgba(255, 215, 0, 0.3);
+            margin-top: 10px;
+            line-height: 1.3;
+        }
+
+        /* Footer section */
+        .footer-section {
+            text-align: center;
+            padding: 40px 0 60px;
+            margin-top: 80px;
+        }
+
+        .signature {
+            position: relative;
+        }
+
+        .signature-text {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2rem;
+            font-weight: 600;
+            color: #8B4513;
+            text-shadow: 1px 1px 3px rgba(255, 182, 193, 0.6);
+            margin-bottom: 15px;
+        }
+
+        .signature-hearts {
+            font-size: 1.2rem;
+            opacity: 0.8;
+        }
+
+        /* Instructions */
+        .instructions {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 255, 255, 0.9);
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            color: #8B4513;
+            box-shadow: 0 4px 15px rgba(255, 182, 193, 0.3);
+            z-index: 50;
+        }
+
+        /* Animations */
+        @keyframes floatUp {
+            0% {
+                opacity: 0.8;
+                transform: translateY(100vh) rotate(0deg);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-100px) rotate(360deg);
+            }
+        }
+
+        @keyframes heartBurst {
+            0% {
+                opacity: 1;
+                transform: scale(0) rotate(0deg);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1.2) rotate(180deg);
+            }
+            100% {
+                opacity: 0;
+                transform: scale(0.8) translateY(-50px) rotate(360deg);
+            }
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        @keyframes musicPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        @keyframes fadeInUp {
+            0% {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInScale {
+            0% {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes sparkle {
+            0%, 100% { opacity: 0.6; transform: translateY(-50%) scale(1); }
+            50% { opacity: 1; transform: translateY(-50%) scale(1.2); }
+        }
+
+        @keyframes subtle-pulse {
+            0%, 100% { filter: brightness(1); }
+            50% { filter: brightness(1.02); }
+        }
+
+        /* Animation classes */
+        .fade-in-up {
+            animation: fadeInUp 1s ease-out forwards;
+        }
+
+        .fade-in-scale {
+            animation: fadeInScale 1s ease-out 0.5s forwards;
+            opacity: 0;
+        }
+
+        /* Additional sparkle effects */
+        .arabic-text-1::before {
+            content: '✨';
+            position: absolute;
+            left: -30px;
+            top: 50%;
+            transform: translateY(-50%);
+            animation: sparkle 2s ease-in-out infinite;
+        }
+
+        .arabic-text-1::after {
+            content: '✨';
+            position: absolute;
+            right: -30px;
+            top: 50%;
+            transform: translateY(-50%);
+            animation: sparkle 2s ease-in-out infinite 1s;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .main-heading {
+                font-size: 2.5rem;
+                padding: 0 10px;
+            }
+            
+            .center-image {
+                max-height: 350px;
+                min-height: 200px;
+                border-radius: 15px;
+            }
+            
+            .arabic-text-1 {
+                font-size: 2rem;
+                padding: 0 10px;
+            }
+            
+            .arabic-text-2 {
+                font-size: 1.5rem;
+                padding: 12px 20px;
+                margin: 0 10px;
+            }
+            
+            .music-btn {
+                top: 15px;
+                right: 15px;
+                padding: 10px 15px;
+                font-size: 0.9rem;
+            }
+            
+            .instructions {
+                bottom: 15px;
+                font-size: 0.8rem;
+                padding: 8px 15px;
+            }
+
+            .sweet-message {
+                padding: 20px;
+                margin: 20px 15px;
+            }
+
+            .sweet-message p {
+                font-size: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .main-container {
+                padding: 20px 15px;
+            }
+            
+            .main-heading {
+                font-size: 2rem;
+            }
+            
+            .center-image {
+                max-height: 280px;
+                min-height: 180px;
+            }
+            
+            .arabic-text-1 {
+                font-size: 1.8rem;
+            }
+            
+            .arabic-text-2 {
+                font-size: 1.3rem;
+                padding: 10px 15px;
+            }
+            
+            .floating-heart {
+                font-size: 1.2rem;
+            }
+            
+            .music-text {
+                display: none;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Floating hearts container -->
+    <div class="floating-hearts-container" id="floatingHearts"></div>
+    
+    <!-- Click hearts container -->
+    <div class="click-hearts-container" id="clickHearts"></div>
+
+    <!-- Music control button -->
+    <button class="music-btn" id="musicBtn" aria-label="Play romantic music">
+        <span class="music-icon">🎵</span>
+        <span class="music-text">Play Music</span>
+    </button>
+
+    <!-- Hidden audio element for background music -->
+    <audio id="backgroundMusic" loop preload="auto">
+        <source src="https://cdn.indexer.eu.org/-1002213576380/283/1759614791/34ffc98dbc1478b64e7b15e2420909c5e09373d02697e7db3d61b088b8676a87" type="audio/mpeg">
+    </audio>
+
+    <!-- Main content container -->
+    <main class="main-container">
+        <!-- Hero section -->
+        <section class="hero-section">
+            <h1 class="main-heading fade-in-up">So proud of you, Sara ❤️</h1>
+            <div class="heart-decoration">💖</div>
+        </section>
+
+        <!-- Sweet message section - NEW! -->
+        <section class="sweet-message">
+            
+            <p class="highlight">معاك حتى تطوري نفسك وتولي طاشرونة ديالي 🫣</p>
+            <p>!دمتي متألقة محبوبتي</p>
+        </section>
+
+        <!-- Image section -->
+        <section class="image-section fade-in-scale">
+            <div class="image-container">
+                <img src="https://i.postimg.cc/m2sr601g/518945442-17956290809968778-1461504491782560576-n.png" alt="Special image for Sara" class="center-image" onload="this.style.opacity='1'" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                <div class="image-fallback" style="display: none;">
+                    <div class="fallback-heart">💖</div>
+                    <p>Image loading...</p>
+                </div>
+            </div>
+            
+            <!-- Arabic text section -->
+            <div class="arabic-text-container">
+                <div class="arabic-text-1 fade-in-up"></div>
+                <div class="arabic-text-2 fade-in-up">مواححححح الكبيدة ديالي</div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer section -->
+    <footer class="footer-section">
+        <div class="signature fade-in-up">
+            <p class="signature-text">From ❤️ Taha</p>
+            <div class="signature-hearts">💕💕💕</div>
+        </div>
+    </footer>
+
+    <!-- Interactive instructions -->
+    <div class="instructions fade-in-up">
+        <p>Click anywhere to spread more love ✨</p>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const musicBtn = document.getElementById('musicBtn');
+            const backgroundMusic = document.getElementById('backgroundMusic');
+            const floatingHeartsContainer = document.getElementById('floatingHearts');
+            const clickHeartsContainer = document.getElementById('clickHearts');
+            const body = document.body;
+            const centerImage = document.querySelector('.center-image');
+
+            let isPlaying = false;
+            
+            if (centerImage) {
+                centerImage.addEventListener('load', function() {
+                    this.style.opacity = '1';
+                });
+                
+                centerImage.addEventListener('error', function() {
+                    const fallback = this.nextElementSibling;
+                    if (fallback && fallback.classList.contains('image-fallback')) {
+                        this.style.display = 'none';
+                        fallback.style.display = 'block';
+                    }
+                });
+                
+                if (centerImage.complete) {
+                    centerImage.style.opacity = '1';
+                }
+            }
+            
+            musicBtn.addEventListener('click', function() {
+                if (!isPlaying) {
+                    backgroundMusic.play().then(() => {
+                        isPlaying = true;
+                        musicBtn.classList.add('playing');
+                        musicBtn.innerHTML = '<span class="music-icon">🎵</span><span class="music-text">Playing...</span>';
+                        body.style.animation = 'subtle-pulse 4s ease-in-out infinite';
+                    }).catch((error) => {
+                        console.log('Audio play failed:', error);
+                        isPlaying = true;
+                        musicBtn.classList.add('playing');
+                        musicBtn.innerHTML = '<span class="music-icon">🎵</span><span class="music-text">Playing...</span>';
+                        body.style.animation = 'subtle-pulse 4s ease-in-out infinite';
+                    });
+                } else {
+                    backgroundMusic.pause();
+                    isPlaying = false;
+                    musicBtn.classList.remove('playing');
+                    musicBtn.innerHTML = '<span class="music-icon">🎵</span><span class="music-text">Play Music</span>';
+                    body.style.animation = '';
+                }
+            });
+
+            backgroundMusic.addEventListener('ended', function() {
+                isPlaying = false;
+                musicBtn.classList.remove('playing');
+                musicBtn.innerHTML = '<span class="music-icon">🎵</span><span class="music-text">Play Music</span>';
+                body.style.animation = '';
+            });
+
+            function createFloatingHeart() {
+                const heart = document.createElement('div');
+                heart.className = 'floating-heart';
+                const hearts = ['💖', '💕', '❤️', '💗', '💘', '💓', '💞', '💟'];
+                heart.textContent = hearts[Math.floor(Math.random() * hearts.length)];
+                heart.style.left = Math.random() * 100 + 'vw';
+                const duration = 6 + Math.random() * 4;
+                heart.style.animationDuration = duration + 's';
+                heart.style.animationDelay = Math.random() * 2 + 's';
+                floatingHeartsContainer.appendChild(heart);
+                setTimeout(() => {
+                    if (heart.parentNode) {
+                        heart.parentNode.removeChild(heart);
+                    }
+                }, (duration + 2) * 1000);
+            }
+
+            function startFloatingHearts() {
+                for (let i = 0; i < 5; i++) {
+                    setTimeout(() => createFloatingHeart(), i * 1000);
+                }
+                setInterval(() => {
+                    createFloatingHeart();
+                }, 2000 + Math.random() * 2000);
+            }
+
+            function createClickHeart(x, y) {
+                const heart = document.createElement('div');
+                heart.className = 'click-heart';
+                const clickHearts = ['💖', '✨', '💕', '🌟', '💫', '💗'];
+                heart.textContent = clickHearts[Math.floor(Math.random() * clickHearts.length)];
+                heart.style.left = x + 'px';
+                heart.style.top = y + 'px';
+                const colors = ['#FF69B4', '#FFD700', '#FF1493', '#FFC0CB', '#DA70D6'];
+                heart.style.color = colors[Math.floor(Math.random() * colors.length)];
+                clickHeartsContainer.appendChild(heart);
+                setTimeout(() => {
+                    if (heart.parentNode) {
+                        heart.parentNode.removeChild(heart);
+                    }
+                }, 1500);
+            }
+
+            body.addEventListener('click', function(e) {
+                if (e.target.closest('.music-btn')) {
+                    return;
+                }
+                const rect = body.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                const heartCount = 2 + Math.floor(Math.random() * 3);
+                for (let i = 0; i < heartCount; i++) {
+                    setTimeout(() => {
+                        const offsetX = x + (Math.random() - 0.5) * 40;
+                        const offsetY = y + (Math.random() - 0.5) * 40;
+                        createClickHeart(offsetX, offsetY);
+                    }, i * 100);
+                }
+            });
+
+            startFloatingHearts();
+            backgroundMusic.load();
+            backgroundMusic.volume = 0.7;
+
+            setTimeout(() => {
+                console.log('💖 Welcome to Sara\'s special page! Click anywhere to spread more love! 💖');
+            }, 2000);
+        });
+    </script>
+</body>
+</html>
